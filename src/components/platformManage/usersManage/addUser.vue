@@ -37,7 +37,9 @@ export default {
         userAcount: "",
         userPwd: "",
         userName: "",
-        userMail: ""
+        userMail: "",
+        userStatus: "1",
+        userType: "0"
       },
       rules: {
         userPhone: [
@@ -71,18 +73,21 @@ export default {
       this.$emit("unShow");
     },
     submitForm(formName) {
-      console.log(this.ruleForm);
-      const data=this.ruleForm
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.mapActions('asyncAdduser',data)
+          const data = this.ruleForm;
+          this.$store.dispatch("users/asyncAdduser", data);
+          this.$alert("新增成功！", "公告", {
+            confirmButtonText: "确定",
+            callback: () => {
+              this.$emit("unShow");
+            }
+          });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
-    },
-     ...mapActions(["asyncAdduser"])
+    }
   }
 };
 </script>
