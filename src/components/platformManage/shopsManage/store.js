@@ -31,14 +31,17 @@ export default {
             });
             context.commit("getShopByPage", data);
         },
-        // async RemoveMemberById(context,id){//根据id，删除数据
-        //     await fetch('/shops/'+id,{
-        //         method:"DELETE",
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //     });
-        //     context.dispatch("asyncGetShopByPage");//重新发出请求，渲染数据
-        // }
+        async UpdateShopById(context, row) {//修改
+            let id = row.id;
+            let state = row.state;
+            const obj = { state };
+            await fetch('/shops/' + id, {
+                method: "POST",
+                body: JSON.stringify(obj),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+        }
     }
 }
