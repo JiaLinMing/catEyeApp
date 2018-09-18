@@ -1,11 +1,12 @@
 <template>
 <div>
-    <h1>用户管理</h1>
-    <el-button type="primary" @click="handleClick()" icon="el-icon-circle-plus ">增加用户</el-button>
+ 
+  <div style="margin-top:10px">
+    <el-button type="info" @click="handleClick()" icon="el-icon-circle-plus ">增加用户</el-button>
     <addUser @unShow="unShow" :dialogVisible="isShow"/>
     <editUser @editDialogunShow="editDialogunShow" :dialogVisible="editDialogShow" :row="row"/>
     <!-- <el-button type="primary" circle icon="el-icon-search "></el-button> -->
-    <el-input size="medium" v-model="input" style="width:400px;margin-left:20px;" placeholder="请输入内容" class="input-with-select">
+    <el-input size="medium" v-model="input" style="width:450px;margin-left:20px;" placeholder="请输入内容" class="input-with-select">
     <el-select  v-model="select" slot="prepend" placeholder="请选择搜索类型">
       <el-option label="手机号" value="userPhone"></el-option>
       <el-option label="角色" value="userType"></el-option>
@@ -14,74 +15,75 @@
     </el-select>
     <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
   </el-input>
+  </div>
   <el-table
     :data="searchUsers"
-    style="width: 100%">
+    >
     <el-table-column
       label="姓名"
-      width="120"
+    
       prop="userName">
     </el-table-column>
     <el-table-column
       label="登录名"
-      width="130"
       prop="userAcount">
     </el-table-column>
     <el-table-column
       label="密码"
-      width="140"
       prop="userPwd">
     </el-table-column>
     <el-table-column
       label="手机号"
-      width="140"
       prop="userPhone">
     </el-table-column>
     <el-table-column
       label="邮箱"
-      width="150"
       prop="userMail">
     </el-table-column>
     <el-table-column
-      label="角色"
-      width="130">
+      label="角色">
       <template slot-scope="scope">
           <span v-if="scope.row.userType==0">平台管理员</span>
           <span v-else>门店管理员</span>
       </template>
     </el-table-column>
     <el-table-column
-      label="状态"
-      width="120">
+      label="状态">
       <template slot-scope="scope">
           <span v-if="scope.row.userStatus==0">申请中</span>
           <span v-else-if="scope.row.userStatus==1">可用</span>
           <span v-else>不可用</span>
       </template>
     </el-table-column>
-    <el-table-column label="操作">
+    <el-table-column label="操作" width="300">
       <template slot-scope="scope">
         <el-button
           v-if="scope.row.userStatus==0"
           size="mini"
+          type="success"
           @click="handleExamine(scope.$index, scope.row,1)">通过申请</el-button>
           <el-button
           v-if="scope.row.userStatus==0"
           size="mini"
+          type="warning"
           @click="handleExamine(scope.$index, scope.row,0)">拒绝申请</el-button>
           <el-button
           v-else
           size="mini"
+          icon="el-icon-edit"
+          type="primary"
           @click="handleEditClick(scope.$index, scope.row)">修改</el-button>
         <el-button
           size="mini"
           type="danger"
+          icon="el-icon-delete"
           @click="handleDelete(scope.$index, scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
    <el-pagination
+      style="margin:10px 0 0 0px"
       @size-change="handleEachChange"
       @current-change="handleCurChange"
       :current-page="curpage"
@@ -97,8 +99,8 @@
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   data() {
+   
     return {
-      select: "",
       isShow: false,
       editDialogShow: false,
       row:{},

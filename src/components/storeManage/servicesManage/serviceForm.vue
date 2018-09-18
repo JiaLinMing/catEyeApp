@@ -1,17 +1,17 @@
 <template>
   <div>
     <el-row>
-      <el-button type="primary" @click="open('添加服务')" icon="el-icon-circle-plus-outline">添加</el-button>
-      <el-button type="primary" @click="open('修改服务')" icon="el-icon-edit-outline">修改</el-button>
+      <el-button type="info" @click="open('添加服务')" icon="el-icon-circle-plus-outline">添加</el-button>
+      <el-button type="info" @click="open('修改服务')" icon="el-icon-edit-outline">修改</el-button>
     </el-row>
-    <el-dialog :visible.sync="dialogVisible" :title="option" props="dialogVisible" width="700px">
+    <el-dialog :visible.sync="dialogVisible" :title="option" props="dialogVisible" width="700px" :before-close="close">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="服务名称" prop="serviceName">
           <el-input v-model="ruleForm.serviceName"></el-input>
         </el-form-item>
         <el-form-item label="服务类别" prop="serviceType">
-          <el-select v-model="ruleForm.serviceType" placeholder="请选择服务类型">
-            <el-option label="宠物洗澡" value="宠物洗澡"></el-option>
+          <el-select v-model="ruleForm.serviceType" placeholder="请选择服务类型" style="width:200px">
+            <el-option label="宠物洗护" value="宠物洗澡"></el-option>
             <el-option label="宠物美容" value="宠物美容"></el-option>
           </el-select>
         </el-form-item>
@@ -60,7 +60,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
-        <el-button type="primary" @click="submitForm(ruleForm)">确 定</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -85,7 +85,8 @@ export default {
         serviceCanFor: "",
         serviceTime: "",
         servicePrice: "",
-        _id: ""
+        _id: "",
+        // userId:this.$route.params.userId
       },
 
       rules: {
@@ -117,6 +118,9 @@ export default {
         serviceDetail: [
           { required: true, message: "请选择服务规格", trigger: "change" }
         ],
+         serviceCanFor: [
+          { required: true, message: "请选择服务规格", trigger: "change" }
+        ],
         servicePrice: [
           { required: true, message: "请填写服务价格", trigger: "blur" }
         ],
@@ -136,29 +140,29 @@ export default {
       "async_updateServ"
     ]),
     //提交
-    submitForm(formName) {
-      this.ruleForm.serviceSchedule = this.ruleForm.startTime +'-'+ this.ruleForm.endTime
-      delete this.ruleForm.startTime;
-      delete this.ruleForm.endTime;
-      this.ruleForm.serviceTime = this.ruleForm.serviceTime+'分钟';
-      this.ruleForm.servicePrice = this.ruleForm.servicePrice+'元';
-      this.async_updateServ(this.ruleForm);
-      console.log("submit!", this.ruleForm);
-      this.dialogVisible = false;
-      // this.resetForm(formName); //提交的回调中清空表单
-      // this.$refs[formName].validate(valid => {
-        // if (valid) {
-        //   //验证通过
-        //   alert("submit!");
-        //   this.async_updateServ(this.ruleForm);
-        //   console.log("submit!", this.ruleForm);
-        // } else {
-        //   this.$alert("请正确填写相关信息！", "警告", {
-        //     confirmButtonText: "确定"
-        //   });
-        //   return false;
-        // }
-      // });
+    submitForm(formName){
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          //验证通过
+          this.ruleForm.serviceSchedule = this.ruleForm.startTime +'-'+ this.ruleForm.endTime
+          delete this.ruleForm.startTime;
+          delete this.ruleForm.endTime;
+          this.ruleForm.serviceTime = this.ruleForm.serviceTime+'分钟';
+          this.ruleForm.servicePrice = this.ruleForm.servicePrice+'元';
+          if(this.option === "修改服务"){
+            this.async_updateServ(this.ruleForm);
+          }else{
+            this.async_addServ(this.ruleForm);
+          }
+          //关闭对话框并清空表单
+          this.close()
+        } else {
+          this.$alert("请完整填写相关信息！", "警告", {
+            confirmButtonText: "确定"
+          });
+          return false;
+        }
+      });
     },
     //打开对话框
     open(val) {
@@ -172,8 +176,7 @@ export default {
         } else {
           this.option = val;
           this.dialogVisible = true;
-          console.log(this.selected[0]);
-          this.ruleForm = this.selected[0];
+          Object.assign(this.ruleForm,this.selected[0])
         }
       }
       //   添加服务对话框
@@ -186,7 +189,7 @@ export default {
     },
     // 关闭对话框
     close() {
-      this.resetForm(ruleForm);
+      this.resetForm('ruleForm');
       this.dialogVisible = false;
     }
   }

@@ -6,11 +6,10 @@ export default {
         eachpage: 10,
         maxpage: 0,
         total: 0,
-        rows: []
+        rows: [],
+        userId: ''
     },
-    getters: {
 
-    },
     mutations: {
         getServByPage(state, payload) {
             Object.assign(state, payload)
@@ -21,31 +20,43 @@ export default {
         setEachPage(state, payload) {
             state.eachpage = payload
         },
-
+        setUserId(state, payload) {
+            state.userId = payload
+        }
 
 
     },
     actions: {
-        async async_getServByPage(context) {
-            const data = await fetch(`/services?page=1&rows=10`, {
+        async async_getServByPage(context, { curpage, eachpage, type, text } = {}) {
+            const data = await fetch(`/services?page=${curpage || context.state.curpage}&rows=${eachpage || context.state.eachpage}&type=${type}&text=${text}&userId=${context.state.userId}`, {
                 headers: { 'Content-Type': "application/json" },
             })
                 .then(response => {
                     return response.json()
                 })
-            // console.log("data", data);
+            console.log("data", data);
             context.commit('getServByPage', data)
         },
         async async_deleteServ(context, ids) {
             const data = await fetch('/services/delete', {
                 method: 'post',
                 headers: { 'Content-Type': "application/json" },
-                body: JSON.stringify(ids)  
+                body: JSON.stringify(ids)
             })
             context.dispatch('async_getServByPage')
         },
         async async_addServ(context, service) {
-            const data = await fetch('/services', {
+            service.userId = context.state.userId
+            const data = await fetch('/services/add', {
+                method: 'POST',
+                headers: { 'Content-Type': "application/json" },
+                body: JSON.stringify(service)
+            })
+            console.log("addData", data);
+            context.dispatch('async_getServByPage')
+        },
+        async async_updateServ(context, service) {
+            const data = await fetch('/services/update', {
                 method: 'post',
                 headers: { 'Content-Type': "application/json" },
                 body: JSON.stringify(service)
@@ -53,14 +64,14 @@ export default {
             console.log("addData", data);
             context.dispatch('async_getServByPage')
         },
-        async async_updateServ(context, service){
-            const data = await fetch('/services/update', {
-                method: 'post',
+        async getSession(context) {
+            const data = await fetch('/getSession', {
                 headers: { 'Content-Type': "application/json" },
-                body: JSON.stringify(service) 
             })
-            console.log("addData", data);
-            context.dispatch('async_getServByPage')
+                .then(response => {
+                    return response.json()
+                })
+            context.commit('setUserId', data[0]._id)
         }
     }
 }

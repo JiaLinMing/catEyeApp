@@ -49,7 +49,7 @@
         label="操作">
         <template slot-scope="rows">
             <el-button type="primary" size="small" icon="el-icon-edit" @click="dialogFormVisible = true">修改</el-button>
-            <el-button type="warning" size="small" icon="el-icon-delete" @click="RemoveMemberById(rows.row._id)">删除</el-button>
+            <el-button type="danger" size="small" icon="el-icon-delete" @click="RemoveMemberById(rows.row._id)">删除</el-button>
         </template>
         </el-table-column>
     </el-table>
@@ -92,6 +92,7 @@
 
 <script>
 import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
+import _ from 'lodash'
 export default {
   name: "members",
   data() {

@@ -1,5 +1,5 @@
 <template>
-      <el-dialog title="修改信息" :visible.sync="dialogVisible" @close="editDialogunShow">
+      <el-dialog :show-close="false" title="修改信息" :visible.sync="dialogVisible">
   <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
       <el-form-item label="姓名" :label-width="formLabelWidth" prop="userName">
       <el-input v-model="ruleForm.userName" style="width:200px"></el-input>
@@ -18,7 +18,8 @@
     </el-form-item>
     <el-form-item label="角色" :label-width="formLabelWidth" prop="userType">
     <el-select v-model="ruleForm.userType">
-      <el-option label="平台管理员" value="0"></el-option>
+      <el-option v-if="ruleForm.userType==0" label="平台管理员" value="0"></el-option>
+       <el-option v-else label="门店管理员" value="1"></el-option>
     </el-select>
   </el-form-item>
     <el-form-item label="状态" :label-width="formLabelWidth" prop="userStatus">

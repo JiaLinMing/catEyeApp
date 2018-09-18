@@ -5,7 +5,7 @@ export default {
         type: 'all',
         input: "",
         curpage: 1,
-        eachpage: 10,
+        eachpage: 5,
         rows: [],
         maxpage: 0,
         total: 0
@@ -25,7 +25,6 @@ export default {
         setType(state, data) {
             state.type = data.type;
             state.input = data.input;
-            console.log(state.input)
         }
     },
     getters: {
