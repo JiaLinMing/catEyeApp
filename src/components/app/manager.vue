@@ -1,13 +1,15 @@
 <template>
 <el-container>
-  <el-header height="70px" >猫眼后台管理系统
+  <el-header height="70px">
+    <div style="float:left;font-size:40px;color:white;letter-spacing:30px;margin-left:200px">宠物后台管理系统</div>
+    
     <div style="float:right">
-    <span>欢迎你{{this.$store.state.setLogin[0].userPhone}}</span>
-    <el-button @click="logout"  type="button" native-type="button" class="el-icon-circle-close" style="margin:0 20px;color:red;background:pink">注销</el-button>
+    <span style="font-weight:bold;color:green;font-size:20px">欢迎你：{{this.$store.state.setLogin[0].userName}}</span>
+    <el-button @click="logout"  type="button" native-type="button" class="el-icon-circle-close" style="margin:0 20px;color:red;background:pink;font-size:20px">注销</el-button>
     </div>
   </el-header>
 <el-container style="height:600px">
-<el-aside width="200px">Aside</el-aside>
+<el-aside width="200px"></el-aside>
 <el-main>
 <el-menu 
   :default-active="activeIndex"
@@ -29,7 +31,7 @@
 <router-view></router-view>
 </el-main>
 </el-container>
-<el-footer>footer</el-footer>
+<el-footer></el-footer>
 </el-container>
 </template>
 

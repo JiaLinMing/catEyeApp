@@ -71,7 +71,8 @@ export default {
                 .then(response => {
                     return response.json()
                 })
-            context.commit('setUserId', data[0]._id)
+            context.commit('setUserId', data[0]._id);
+            context.dispatch('async_getServByPage')
         }
     }
 }

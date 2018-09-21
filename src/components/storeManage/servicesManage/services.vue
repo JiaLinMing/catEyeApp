@@ -48,9 +48,9 @@ import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
   name: "services",
-  mounted() {
-    this.async_getServByPage();
-  },
+  // mounted() {
+  //   this.async_getServByPage();
+  // },
   props: ["option"],
   data() {
     return {

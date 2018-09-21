@@ -5,7 +5,7 @@
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload> -->
     <el-upload class="upload-demo" 
-    multiple :limit="3"
+    multiple :limit="6"
     action="/goods/upload" 
     :on-preview="handlePreview" 
     :on-remove="handleRemove" 

@@ -23,7 +23,7 @@ const router = new Router({
         },
         {
             path: '/login/:userPhone',
-            name: 'login',
+            name: '登录',
             component: Login
         },
         {
@@ -76,7 +76,7 @@ const router = new Router({
                 name: 'orders',
                 component: Orders,
                 beforeEnter: (to, from, next) => {
-                    store.dispatch('orders/asyncGetOrdersByPage');
+                    store.dispatch('orders/getSession');
                     next()
                 }
             }, {
@@ -91,10 +91,6 @@ const router = new Router({
                 path: 'shops',
                 name: 'shops',
                 component: Shops,
-                beforeEnter: (to, from, next) => {
-                    store.dispatch('shops/getSession');
-                    next()
-                }
             }, {
                 path: 'services',
                 name: 'services',

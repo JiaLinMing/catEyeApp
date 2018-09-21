@@ -8,7 +8,8 @@ export default {
         eachpage: 5,
         rows: [],
         maxpage: 0,
-        total: 0
+        total: 0,
+        userId:''
     },
     mutations: {
         getOrdersByPage(state, payload) {
@@ -25,6 +26,9 @@ export default {
             state.type = data.type;
             state.input = data.input;
             console.log(state.input)
+        },
+        setUserId(state, payload) {
+            state.userId = payload
         }
     },
     getters: {
@@ -45,7 +49,8 @@ export default {
         async asyncGetOrdersByPage(context, state) {
             const rows = context.state.eachpage;
             const page = context.state.curpage;
-            const data = await fetch(`/orders?page=${page}&rows=${rows}`, {
+            const userId=context.state.userId
+            const data = await fetch(`/orders?page=${page}&rows=${rows}&userId=${userId}`, {
                 headers: { 'Content-Type': "application/json" },
             })
                 .then(response => {
@@ -61,6 +66,18 @@ export default {
                 method: 'POST',
                 body: JSON.stringify(data)
             })
+            context.dispatch("asyncGetOrdersByPage")
+        },
+        async getSession(context){
+            const data = await fetch(`/getSession`, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                return response.json();
+            });
+            context.commit('setUserId',data[0]._id);
+            
             context.dispatch("asyncGetOrdersByPage")
         }
     }

@@ -102,9 +102,9 @@ export default {
       //   eachpage: Number
     };
   },
-  mounted() {
-    this.asyncGetGoods();
-  },
+//   mounted() {
+//     this.asyncGetGoods();
+//   },
   computed: {
     ...mapState("goods", ["curpage", "eachpage", "maxpage", "total", "rows"])
   },

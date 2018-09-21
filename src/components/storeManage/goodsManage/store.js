@@ -91,6 +91,7 @@ export default {
                 return response.json();
             });
             context.commit('setUserId',data[0]._id);
+            context.dispatch('asyncGetGoods')
         }
     }
 }

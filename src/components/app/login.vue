@@ -49,7 +49,7 @@ export default {
                   confirmButtonText: "确定",
                   callback: () => {
                     // if (this.$store.state.userType == 0) {
-                      this.$router.push(`./manager`);
+                      this.$router.push({path:"manager",name:"manager"});
                     // } else {
                     //   this.$router.push(`./orders`);
                     // }
